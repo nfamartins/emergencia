@@ -9,6 +9,7 @@ Jogo em Python/Pygame com simulação de agentes (ABM). Uma mulher de SP muda pa
 - **Elegância e legibilidade:** código claro e bem nomeado vale mais que comentário. Identifiers expressivos, funções pequenas com responsabilidade única, sem abstrações prematuras.
 - **Modularidade:** cada sistema do jogo (tempo, mapa, agentes, UI, ABM) vive em seu próprio módulo. Dependências explícitas, sem acoplamento desnecessário entre camadas.
 - **Skills para padrões recorrentes:** sempre que um padrão de desenvolvimento ou visual se repetir (ex: renderização de tiles, desenho de painéis HUD, comportamento de agente), criar uma skill reutilizável em vez de duplicar código.
+- **Inglês no código:** nomes de pastas, arquivos, funções, variáveis e classes sempre em inglês. Português apenas em strings visíveis ao jogador e em comentários.
 
 ---
 
@@ -22,9 +23,23 @@ Jogo em Python/Pygame com simulação de agentes (ABM). Uma mulher de SP muda pa
 | Rede social | NetworkX |
 | Visualização | Painel Pygame / Matplotlib |
 
+**Gerenciamento de ambiente:** Poetry (2.x).
+
 ```bash
-pip install pygame mesa networkx matplotlib
+# instalar dependências
+poetry install
+
+# ativar shell
+poetry shell
+
+# rodar o jogo
+poetry run python jogo/main.py
+
+# adicionar nova dependência
+poetry add <pacote>
 ```
+
+Python requerido: `>=3.12,<3.14.1 || >3.14.1`
 
 ---
 
