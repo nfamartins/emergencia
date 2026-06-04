@@ -15,6 +15,7 @@ from world.map import GameMap
 from world.time_system import TimeSystem
 from entities.player import Player
 from ui.hud import HUD
+from ui.minimap import Minimap
 from abm.village import VillageModel
 from save import save_game, load_game
 
@@ -22,6 +23,7 @@ from save import save_game, load_game
 class GameState(Enum):
     PLAYING        = auto()
     DAY_END_PROMPT = auto()
+    MAP_OVERVIEW   = auto()
 
 
 def main():
@@ -34,6 +36,7 @@ def main():
     time_system = TimeSystem()
     player      = Player()
     hud         = HUD()
+    minimap     = Minimap(game_map)
     village     = VillageModel(lots=game_map.lots, num_families=30)
     state       = GameState.PLAYING
 
@@ -51,8 +54,15 @@ def main():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    if state == GameState.MAP_OVERVIEW:
+                        state = GameState.PLAYING
+                    else:
+                        pygame.quit()
+                        sys.exit()
+                if event.key == pygame.K_m:
+                    state = (GameState.PLAYING
+                             if state == GameState.MAP_OVERVIEW
+                             else GameState.MAP_OVERVIEW)
                 if event.key == pygame.K_RETURN and state == GameState.DAY_END_PROMPT:
                     village.step()
                     save_game(time_system, player)
@@ -78,6 +88,8 @@ def main():
 
         if state == GameState.DAY_END_PROMPT:
             hud.draw_day_end_prompt(screen, time_system)
+        elif state == GameState.MAP_OVERVIEW:
+            minimap.draw(screen, player, village)
 
         pygame.display.flip()
 

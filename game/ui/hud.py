@@ -37,7 +37,7 @@ class HUD:
         bot_y = SCREEN_HEIGHT - _FOOTER_H
         surface.blit(self._bot_bar, (0, bot_y))
         surface.blit(
-            self.font_hint.render("WASD / setas: mover  |  TAB: modo sistema", True, _HINT_COLOR),
+            self.font_hint.render("WASD: mover  |  M: mapa  |  TAB: modo sistema", True, _HINT_COLOR),
             (12, bot_y + 5),
         )
         ver_surf = self.font_hint.render(_VERSION_INFO, True, _VER_COLOR)

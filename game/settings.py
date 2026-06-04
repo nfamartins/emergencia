@@ -8,7 +8,7 @@ MAP_COLS  = 750   # ~320 village + ~420 rural (1 tile = 1 m)
 MAP_ROWS  = 200
 
 HOURS_PER_DAY    = 24
-SECONDS_PER_HOUR = 1.0   # 1 segundo real = 1 hora de jogo
+SECONDS_PER_HOUR = 60.0  # 1 minuto real = 1 hora de jogo
 DAY_START_HOUR   = 6
 DAY_END_HOUR     = 22
 

@@ -1,5 +1,6 @@
 from settings import (DAYS_PER_MONTH, MONTHS_PER_YEAR, SEASONS,
-                      HOURS_PER_DAY, DAY_START_HOUR, DAY_END_HOUR)
+                      HOURS_PER_DAY, DAY_START_HOUR, DAY_END_HOUR,
+                      SECONDS_PER_HOUR)
 
 MONTH_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
                "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
@@ -54,9 +55,13 @@ class TimeSystem:
     def season_color(self) -> tuple:
         return SEASONS[self.season]["color"]
 
+    @property
+    def minute(self) -> int:
+        return int(self._elapsed / SECONDS_PER_HOUR * 60)
+
     def __str__(self) -> str:
         return (f"Dia {self.day} de {MONTH_NAMES[self.month]}"
-                f" · Ano {self.year} · {self.season} · {self.hour:02d}h")
+                f" · Ano {self.year} · {self.season} · {self.hour:02d}:{self.minute:02d}")
 
     def to_dict(self) -> dict:
         return {"day": self.day, "month": self.month,
