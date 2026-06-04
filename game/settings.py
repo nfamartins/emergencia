@@ -4,8 +4,8 @@ FPS = 60
 TITLE = "Emergência"
 
 TILE_SIZE = 32
-MAP_COLS = 40
-MAP_ROWS = 30
+MAP_COLS  = 750   # ~320 village + ~420 rural (1 tile = 1 m)
+MAP_ROWS  = 200
 
 HOURS_PER_DAY    = 24
 SECONDS_PER_HOUR = 1.0   # 1 segundo real = 1 hora de jogo
@@ -23,10 +23,21 @@ SEASONS = {
     "Primavera": {"months": [9, 10, 11], "color": (120, 180, 100)},
 }
 
-COLOR_GRASS       = ( 86, 130,  46)
-COLOR_DIRT        = (139,  90,  43)
-COLOR_WATER       = ( 64, 164, 223)
-COLOR_VILLAGE     = (180, 160, 120)
-COLOR_PLAYER      = (255, 220, 100)
-COLOR_TEXT        = (255, 255, 255)
-COLOR_TILE_BORDER = (160, 160, 160)  # cinza suave entre tiles
+# ── tile colors (paleta terrosa, sem cores puras RGB) ─────────────────────────
+COLOR_GRASS        = ( 86, 130,  46)   # campo aberto
+COLOR_WATER        = ( 64, 164, 223)   # rio, lagoa
+COLOR_ROAD         = (130, 100,  60)   # estrada de terra / rua
+COLOR_LOT_RES      = (190, 170, 140)   # lote residencial
+COLOR_LOT_COM      = (155, 175, 185)   # lote comercial / institucional
+COLOR_PLAZA        = (205, 195, 165)   # praça central
+COLOR_FOREST       = ( 35,  90,  30)   # mata
+COLOR_FARM         = (160, 135,  65)   # terra agrícola
+
+# ── other colors ──────────────────────────────────────────────────────────────
+COLOR_PLAYER       = (255, 220, 100)
+COLOR_TEXT         = (255, 255, 255)
+COLOR_TILE_BORDER  = (160, 160, 160)   # cinza suave entre tiles
+
+# ── player (farm) home position in tiles ─────────────────────────────────────
+PLAYER_HOME_COL = 440
+PLAYER_HOME_ROW =  35

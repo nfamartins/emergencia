@@ -49,14 +49,59 @@ Python requerido: `>=3.12,<3.14.1 || >3.14.1`
 game/
 ├── main.py
 ├── settings.py
+├── save.py
 ├── world/
-│   ├── map.py
+│   ├── map.py           # geração do mapa (vila + rural)
+│   ├── layout.py        # geometria: blocos, terrenos, praça
+│   ├── distributions.py # distribuições demográficas (IBGE)
 │   └── time_system.py
+├── abm/
+│   ├── village.py       # Mesa Model — famílias e step diário
+│   └── villager.py      # Mesa Agent — atributos + relações familiares
 ├── entities/
 │   └── player.py
 └── ui/
     └── hud.py
+docs/
+└── concept_art/
+    └── village_layout_v1.png   ← salvar a imagem aqui manualmente
 ```
+
+## Mapa — parâmetros espaciais
+
+**1 tile = 1 m²**
+
+| Elemento | Dimensão (tiles) |
+|---|---|
+| Quarteirão | 100 × 50 |
+| Terreno | 25 × 25 |
+| Rua | 5 de largura |
+| Margem do mapa | 10 |
+| Praça central | 100 × 50 (bloco central do grid 3×3) |
+| Vila total | 320 × 170 |
+| Mapa total | 750 × 200 |
+
+**Layout:** 9 quarteirões (3×3 grid) — o central é a praça. 8 quarteirões × 8 terrenos = 64 terrenos (12 comerciais/institucionais nos terrenos que fazem face à praça, 52 residenciais).
+
+**Posição do jogador (home):** `PLAYER_HOME_COL=440, PLAYER_HOME_ROW=35` — fazenda inicial na área rural.
+
+**Área rural (col > 330):** rio no topo, fazenda inicial, manchas de mata, lagoa, estradas de terra.
+
+## Modelo demográfico
+
+Famílias geradas via `world/distributions.py` (baseado em PNAD IBGE 2022):
+
+| Tipo | Proporção | Composição |
+|---|---|---|
+| single | 14% | 1 adulto |
+| couple | 20% | 2 adultos (casal) |
+| couple_children | 50% | 2 adultos + 1–3 filhos |
+| single_parent | 16% | 1 adulto + 1–4 filhos |
+
+- **Adultos:** gênero aleatório (50/50), idade normal(µ=40, σ=15), clamp [25, 85]
+- **Parceiro:** idade normal(base, σ=5), clamp [25, 85]
+- **Filhos:** gênero aleatório, idade uniforme [0, min(24, idade_pai−19)]
+- **30 famílias iniciais** designadas a terrenos residenciais aleatórios (22 ficam vazios)
 
 ---
 

@@ -34,7 +34,7 @@ def main():
     time_system = TimeSystem()
     player      = Player()
     hud         = HUD()
-    village     = VillageModel(num_agents=25)
+    village     = VillageModel(lots=game_map.lots, num_families=30)
     state       = GameState.PLAYING
 
     load_game(time_system, player)
