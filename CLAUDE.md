@@ -33,7 +33,7 @@ poetry install
 poetry shell
 
 # rodar o jogo
-poetry run python jogo/main.py
+poetry run python game/main.py
 
 # adicionar nova dependência
 poetry add <pacote>
@@ -46,19 +46,16 @@ Python requerido: `>=3.12,<3.14.1 || >3.14.1`
 ## Estrutura de arquivos (alvo)
 
 ```
-jogo/
-├── main.py              # entry point, game loop
-├── settings.py          # constantes globais
+game/
+├── main.py
+├── settings.py
 ├── world/
-│   ├── __init__.py
-│   ├── map.py           # mapa, tiles, renderização
-│   └── time_system.py   # dias, meses, anos, estações
+│   ├── map.py
+│   └── time_system.py
 ├── entities/
-│   ├── __init__.py
-│   └── player.py        # personagem, movimento
+│   └── player.py
 └── ui/
-    ├── __init__.py
-    └── hud.py           # HUD: data, estação, atributos básicos
+    └── hud.py
 ```
 
 ---
