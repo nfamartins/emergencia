@@ -23,13 +23,15 @@ class HUD:
         self._bot_bar   = pygame.Surface((SCREEN_WIDTH, _FOOTER_H), pygame.SRCALPHA)
         self._bot_bar.fill((0, 0, 0, 120))
 
-    def draw(self, surface: pygame.Surface, time_system) -> None:
-        # barra superior: data + hora
+    def draw(self, surface: pygame.Surface, time_system, agent_count: int = 0) -> None:
+        # barra superior: data + hora + moradores
         surface.blit(self._top_bar, (0, 0))
         surface.blit(
             self.font_main.render(str(time_system), True, COLOR_TEXT),
             (12, 9),
         )
+        pop_surf = self.font_hint.render(f"moradores: {agent_count}", True, _HINT_COLOR)
+        surface.blit(pop_surf, (SCREEN_WIDTH - pop_surf.get_width() - 12, 11))
 
         # barra inferior: dica de controles (esq) + versão (dir)
         bot_y = SCREEN_HEIGHT - _FOOTER_H

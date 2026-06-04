@@ -15,11 +15,12 @@ from world.map import GameMap
 from world.time_system import TimeSystem
 from entities.player import Player
 from ui.hud import HUD
+from abm.village import VillageModel
 from save import save_game, load_game
 
 
 class GameState(Enum):
-    PLAYING       = auto()
+    PLAYING        = auto()
     DAY_END_PROMPT = auto()
 
 
@@ -33,6 +34,7 @@ def main():
     time_system = TimeSystem()
     player      = Player()
     hud         = HUD()
+    village     = VillageModel(num_agents=25)
     state       = GameState.PLAYING
 
     load_game(time_system, player)
@@ -52,6 +54,7 @@ def main():
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_RETURN and state == GameState.DAY_END_PROMPT:
+                    village.step()
                     save_game(time_system, player)
                     time_system.advance_to_next_day()
                     player.return_home()
@@ -69,8 +72,9 @@ def main():
 
         screen.fill(COLOR_TILE_BORDER)
         game_map.draw(screen, camera_x, camera_y, time_system.season_color)
+        village.draw(screen, camera_x, camera_y)
         player.draw(screen, camera_x, camera_y)
-        hud.draw(screen, time_system)
+        hud.draw(screen, time_system, len(list(village.agents)))
 
         if state == GameState.DAY_END_PROMPT:
             hud.draw_day_end_prompt(screen, time_system)
