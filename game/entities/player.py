@@ -7,9 +7,15 @@ _OUTLINE_COLOR = (180, 140, 40)
 
 class Player:
     def __init__(self):
-        self.x = (MAP_COLS // 2) * TILE_SIZE
-        self.y = (MAP_ROWS // 2 + 6) * TILE_SIZE
+        self._home_x = (MAP_COLS // 2) * TILE_SIZE
+        self._home_y = (MAP_ROWS // 2 + 6) * TILE_SIZE
+        self.x    = self._home_x
+        self.y    = self._home_y
         self.size = TILE_SIZE - 4
+
+    def return_home(self) -> None:
+        self.x = self._home_x
+        self.y = self._home_y
 
     def handle_input(self, keys):
         if keys[pygame.K_LEFT]  or keys[pygame.K_a]: self.x -= SPEED

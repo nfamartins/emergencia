@@ -1,4 +1,5 @@
-from settings import DAYS_PER_MONTH, MONTHS_PER_YEAR, SEASONS
+from settings import (DAYS_PER_MONTH, MONTHS_PER_YEAR, SEASONS,
+                      HOURS_PER_DAY, DAY_START_HOUR, DAY_END_HOUR)
 
 MONTH_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
                "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
@@ -6,21 +7,30 @@ MONTH_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
 
 class TimeSystem:
     def __init__(self):
-        self.day = 1
+        self.day   = 1
         self.month = 0
-        self.year = 1
+        self.year  = 1
+        self.hour  = DAY_START_HOUR
         self._elapsed = 0.0
 
-    def update(self, dt: float, seconds_per_day: float) -> int:
+    def update(self, dt: float, seconds_per_hour: float) -> int:
         self._elapsed += dt
-        days_passed = 0
-        while self._elapsed >= seconds_per_day:
-            self._elapsed -= seconds_per_day
-            self._advance_day()
-            days_passed += 1
-        return days_passed
+        hours_passed = 0
+        while self._elapsed >= seconds_per_hour:
+            self._elapsed -= seconds_per_hour
+            self.hour += 1
+            hours_passed += 1
+            if self.hour >= HOURS_PER_DAY:
+                self.hour = 0
+                self._advance_day()
+        return hours_passed
 
-    def _advance_day(self):
+    def advance_to_next_day(self) -> None:
+        self._advance_day()
+        self.hour     = DAY_START_HOUR
+        self._elapsed = 0.0
+
+    def _advance_day(self) -> None:
         self.day += 1
         if self.day > DAYS_PER_MONTH:
             self.day = 1
@@ -28,6 +38,10 @@ class TimeSystem:
         if self.month >= MONTHS_PER_YEAR:
             self.month = 0
             self.year += 1
+
+    @property
+    def is_day_end_hour(self) -> bool:
+        return self.hour >= DAY_END_HOUR
 
     @property
     def season(self) -> str:
@@ -41,4 +55,16 @@ class TimeSystem:
         return SEASONS[self.season]["color"]
 
     def __str__(self) -> str:
-        return f"Dia {self.day} de {MONTH_NAMES[self.month]} · Ano {self.year} · {self.season}"
+        return (f"Dia {self.day} de {MONTH_NAMES[self.month]}"
+                f" · Ano {self.year} · {self.season} · {self.hour:02d}h")
+
+    def to_dict(self) -> dict:
+        return {"day": self.day, "month": self.month,
+                "year": self.year, "hour": self.hour}
+
+    def from_dict(self, data: dict) -> None:
+        self.day      = data["day"]
+        self.month    = data["month"]
+        self.year     = data["year"]
+        self.hour     = data.get("hour", DAY_START_HOUR)
+        self._elapsed = 0.0

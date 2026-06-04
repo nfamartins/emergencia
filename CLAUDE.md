@@ -97,7 +97,7 @@ game/
 
 | Fase | Entregável jogável | Status |
 |---|---|---|
-| 1 | Mapa navegável + tempo + estações | Planejado |
+| 1 | Mapa navegável + tempo + estações | Concluído |
 | 2 | Vila com 20–30 agentes vivos | Planejado |
 | 3 | Ações do jogador afetam os agentes | Planejado |
 | 4 | Painel Modo Sistema mínimo | Planejado |
