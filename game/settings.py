@@ -4,8 +4,8 @@ FPS = 60
 TITLE = "Emergência"
 
 TILE_SIZE = 32
-MAP_COLS  = 750   # ~320 village + ~420 rural (1 tile = 1 m)
-MAP_ROWS  = 200
+MAP_COLS  = 750   # ~320 village (cols 10–330) + ~420 rural (cols 335–750)
+MAP_ROWS  = 280   # 90 rural above village + 170 village + 20 margin below
 
 HOURS_PER_DAY    = 24
 SECONDS_PER_HOUR = 60.0  # 1 minuto real = 1 hora de jogo
@@ -39,5 +39,5 @@ COLOR_TEXT         = (255, 255, 255)
 COLOR_TILE_BORDER  = (160, 160, 160)   # cinza suave entre tiles
 
 # ── player (farm) home position in tiles ─────────────────────────────────────
-PLAYER_HOME_COL = 440
+PLAYER_HOME_COL = 420   # centro da fazenda inicial (área rural)
 PLAYER_HOME_ROW =  35

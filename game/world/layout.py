@@ -10,14 +10,17 @@ Village structure (3×3 block grid, center = plaza):
 Block: 100 × 50 tiles  (4 lots wide × 2 lots tall)
 Lot:    25 × 25 tiles
 Street:  5 tiles wide
-Margin: 10 tiles from map edge
+
+The village sits in the lower-left of the map, leaving rural space above it
+(MARGIN_V = 90 rows of rural/field above the village).
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Literal, Optional
 
 # ── geometry constants ───────────────────────────────────────────────────────
 
-MARGIN       = 10   # tiles from map edge to first street
+MARGIN_H     = 10   # horizontal margin (cols) from map left edge to village
+MARGIN_V     = 90   # vertical margin (rows) above village — rural/field area
 STREET_W     = 5    # street / sidewalk width in tiles
 BLOCK_W      = 100  # block width  (E–W)
 BLOCK_H      = 50   # block height (N–S)
@@ -54,24 +57,20 @@ class Lot:
 
 def block_origin(block_row: int, block_col: int) -> tuple[int, int]:
     """Top-left tile (row, col) of a block in the 3×3 grid."""
-    r = MARGIN + STREET_W + block_row * (BLOCK_H + STREET_W)
-    c = MARGIN + STREET_W + block_col * (BLOCK_W + STREET_W)
+    r = MARGIN_V + STREET_W + block_row * (BLOCK_H + STREET_W)
+    c = MARGIN_H + STREET_W + block_col * (BLOCK_W + STREET_W)
     return r, c
 
 
 def _is_commercial(block_row: int, block_col: int,
                    lot_row: int, lot_col: int) -> bool:
     """True for the 12 lots that face the central plaza."""
-    # North block  (0,1) — bottom lot row
     if (block_row, block_col) == (0, 1) and lot_row == LOTS_PER_COL - 1:
         return True
-    # South block  (2,1) — top lot row
     if (block_row, block_col) == (2, 1) and lot_row == 0:
         return True
-    # West block   (1,0) — rightmost lot column
     if (block_row, block_col) == (1, 0) and lot_col == LOTS_PER_ROW - 1:
         return True
-    # East block   (1,2) — leftmost lot column
     if (block_row, block_col) == (1, 2) and lot_col == 0:
         return True
     return False
@@ -108,4 +107,4 @@ def village_bounds() -> tuple[int, int, int, int]:
     """(row, col, height, width) of the full village footprint (including streets)."""
     h = STREET_W + 3 * BLOCK_H + 2 * STREET_W + STREET_W
     w = STREET_W + 3 * BLOCK_W + 2 * STREET_W + STREET_W
-    return MARGIN, MARGIN, h, w
+    return MARGIN_V, MARGIN_H, h, w
